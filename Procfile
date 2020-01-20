@@ -1,1 +1,1 @@
-web: gunicorn ws-product-python.wsgi
+web: gunicorn app:app
