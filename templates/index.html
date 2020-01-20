@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+{% block index %}
+    <center><h1>{{title}} {{count}}</h1>
+        
+        <button class = "button" onclick="window.location.href = '{{ url_for('events_hourly') }}'">events hourly</button>
+        <button class = "button" onclick="window.location.href = '{{ url_for('events_daily') }}'">events daily </button>
+        <button class = "button" onclick="window.location.href = '{{ url_for('stats_hourly') }}'">stats hourly</button>
+        <button class = "button" onclick="window.location.href = '{{ url_for('stats_daily') }}'">stats daily</button>
+        <button class = "button"onclick="window.location.href = '{{ url_for('poi') }}'">poi</button>
+    </center>
+{% endblock %}

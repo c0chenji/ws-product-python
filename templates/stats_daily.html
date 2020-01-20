@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block stats_daily %}
+  <button class = "button" onclick="window.location.href = '{{ url_for('index') }}';">Go Back</button>
+  <center>
+    <input type="text" id="search" placeholder = "Any character on the table">
+      <table id="table">
+        <tr class="header">
+          <th>Date</th>
+          <th>Clicks</th>
+          <th>Impressions</th>
+          <th>Revenue</th>
+        </tr>
+        {% for item in s_d%}
+        <tr class="search">
+          <td>{{ item["date"] }}</td>
+          <td>{{ item["clicks"] }}</td>
+          <td>{{ item["impressions"] }}</td>
+          <td>{{ item["revenue"] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+
+    
+  </center>
+  <center>
+    <h1>{{ title }}</h1>
+
+    <canvas id="myChart"></canvas>
+    <script>
+      var ctx = document.getElementById('myChart').getContext('2d');
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: [
+            {% for item in s_d %}
+              "{{ item["date"] }}",
+            {% endfor %}
+        ],
+        datasets: [
+        {
+            label: 'clicks',
+            backgroundColor: 'rgba(255, 255, 255,0)',
+            borderColor: 'rgb(179, 179, 0)',
+            data: [
+              {% for item in s_d %}
+                "{{ item["clicks"] }}",
+              {% endfor %}
+            ]
+        },
+        {
+            label: 'impressions',
+            backgroundColor: 'rgba(255, 255, 255,0)',
+            borderColor: 'rgb(0, 153, 204)',
+            data: [
+              {% for item in s_d %}
+                "{{ item["impressions"] }}",
+              {% endfor %}
+            ]
+        },
+        {
+            label: 'revenue',
+            backgroundColor: 'rgba(255, 255, 255,0)',
+            borderColor: 'rgb(77, 255, 77)',
+            data: [
+              {% for item in s_d %}
+                "{{ item["revenue"] }}",
+              {% endfor %}
+            ]
+        }
+
+
+      ]
+    },
+
+    // Configuration options go here
+    options: {}
+});
+    </script>
+  </center>
+{% endblock %}

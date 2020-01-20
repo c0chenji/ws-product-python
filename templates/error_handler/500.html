@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block errorMessage %}
+
+  <p>An internal server error exists, {{ error }}</p>
+
+  <button class="button" onclick="window.location.href = '{{ url_for('index') }}';">Go Back</button>
+{% endblock %}

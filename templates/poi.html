@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block poi %}
+<button class="button" onclick="window.location.href = '{{ url_for('index') }}';">Go Back</button>
+<center>
+    <input type="text" id="search" placeholder = "Any character on the table">
+        <table id="table">
+            <tr class="header">
+                <th>Date</th>
+                <th>Name</th>
+                <th>Events</th>
+                <th>Hours</th>
+                <th>Latitude</th>
+                <th>Longtitude</th>
+                <th>Poi_id</th>
+            </tr>
+            {% for item in new_table%}
+            <tr class="result">
+                <td>{{ item["date"] }}</td>
+                <td>{{ item["name"] }}</td>
+                <td>{{ item["events"] }}</td>
+                <td>{{ item["hour"] }}</td>
+                <td>{{ item["lat"] }}</td>
+                <td>{{ item["lon"] }}</td>
+                <td>{{ item["poi_id"] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+</center>
+<div class="mapFrame">
+    <h>Page can't load Google Maps correctly since I didn't enable Billing on Google Cloud account.
+       <br>
+       <b>Required functionalities are still working.</b>     
+       <br>
+    </h>
+    <div id="map">
+
+    </div>
+</div>
+
+<script>
+    function initMap() {
+        var locations = [
+        {% for location in locations %}
+            {
+                name:"{{location["name"]}}",
+                spot:{
+                lat: {{ location["lat"]}},
+                lng: {{ location["lon"]}},
+                },
+            },
+         {% endfor %}
+        ];
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 3,
+            center: { lat: locations[0].spot.lat, lng: locations[0].spot.lng}
+        });
+
+    // Create an array of alphabetical characters used to label the markers.
+    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var markers = locations.map(function (location, i) { 
+        marker = new google.maps.Marker({
+            position: location.spot,
+            label: labels[i%labels.length],
+            title:location.name
+        });   
+        return marker;
+    });
+   
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers,
+        { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });   
+    }
+    
+
+</script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSE8v2yh_RXSnd2bCpVgZ54GcfJUiWXMA&callback=initMap">
+    </script>
+
+
+{% endblock %}
