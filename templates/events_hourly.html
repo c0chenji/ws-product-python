@@ -1,16 +1,23 @@
 {% extends "base.html" %}
 {% block events_hourly %}
 <button class="button" onclick="window.location.href = '{{ url_for('index') }}';">Go Back</button>
+<center><h1>{{title}} </h1>
+  <p>Allowance: {{count}} hits</p>
+  <!-- <p>Start: {{fromtime}}</p>
+  <p>Now :{{now}}</p> -->
+  {% if count == 0 %}
+      <p>{{message}}</p>
+  {% endif %}
+</center>
 <center>
   <input type="text" id="search" placeholder = "Any character on the table">
-  
     <table id="table">
       <tr class="header">
         <th>Date</th>
         <th>Hour</th>
         <th>Events</th>
       </tr>
-      {% for item in e_h%}
+      {% for item in data%}
       <tr class="search">
         <td>{{ item["date"] }}</td>
         <td>{{ item["hour"] }}</td>
@@ -22,9 +29,6 @@
   
 </center>
 <center>
-
-  <h1>{{ title }}</h1>
-
   <canvas id="myChart"></canvas>
   <script>
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -35,7 +39,7 @@
       // The data for our dataset
       data: {
         labels: [
-          {% for item in e_h %}
+          {% for item in data %}
               "{{ item["date"] }}",
             {% endfor %}
         ],
@@ -44,7 +48,7 @@
       backgroundColor: 'rgba(255, 255, 255,0)',
       borderColor: 'rgb(255, 99, 132)',
       data: [
-        {% for item in e_h %}
+        {% for item in data %}
                 "{{ item["hour"] }}",
     {% endfor %}
     ]
@@ -54,7 +58,7 @@
         backgroundColor: 'rgba(255, 255, 255,0)',
           borderColor: 'rgb(0, 102, 255)',
             data: [
-              {% for item in e_h %}
+              {% for item in data %}
     "{{ item["events"] }}",
       {% endfor %}
             ]

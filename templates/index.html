@@ -1,7 +1,13 @@
 
 {% extends "base.html" %}
 {% block index %}
-    <center><h1>{{title}} {{count}}</h1>
+    <center><h1>{{title}} </h1>
+        <h1>Allowance: {{count}} hits</h1>
+        <h1>Start: {{fromtime}}</h1>
+        <h1>Now :{{now}}</h1>
+        {% if count == 0 %}
+            <h1>{{message}}</h1>
+        {% endif %}
         
         <button class = "button" onclick="window.location.href = '{{ url_for('events_hourly') }}'">events hourly</button>
         <button class = "button" onclick="window.location.href = '{{ url_for('events_daily') }}'">events daily </button>

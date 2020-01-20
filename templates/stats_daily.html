@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% block stats_daily %}
   <button class = "button" onclick="window.location.href = '{{ url_for('index') }}';">Go Back</button>
+  <center><h1>{{title}} </h1>
+    <p>Allowance: {{count}} hits</p>
+    <!-- <p>Start: {{fromtime}}</p>
+    <p>Now :{{now}}</p> -->
+    {% if count == 0 %}
+        <p>{{message}}</p>
+    {% endif %}
+  </center>
   <center>
     <input type="text" id="search" placeholder = "Any character on the table">
       <table id="table">
@@ -10,7 +18,7 @@
           <th>Impressions</th>
           <th>Revenue</th>
         </tr>
-        {% for item in s_d%}
+        {% for item in data%}
         <tr class="search">
           <td>{{ item["date"] }}</td>
           <td>{{ item["clicks"] }}</td>
@@ -35,7 +43,7 @@ var chart = new Chart(ctx, {
     // The data for our dataset
     data: {
         labels: [
-            {% for item in s_d %}
+            {% for item in data %}
               "{{ item["date"] }}",
             {% endfor %}
         ],
@@ -45,7 +53,7 @@ var chart = new Chart(ctx, {
             backgroundColor: 'rgba(255, 255, 255,0)',
             borderColor: 'rgb(179, 179, 0)',
             data: [
-              {% for item in s_d %}
+              {% for item in data %}
                 "{{ item["clicks"] }}",
               {% endfor %}
             ]
@@ -55,7 +63,7 @@ var chart = new Chart(ctx, {
             backgroundColor: 'rgba(255, 255, 255,0)',
             borderColor: 'rgb(0, 153, 204)',
             data: [
-              {% for item in s_d %}
+              {% for item in data %}
                 "{{ item["impressions"] }}",
               {% endfor %}
             ]
@@ -65,7 +73,7 @@ var chart = new Chart(ctx, {
             backgroundColor: 'rgba(255, 255, 255,0)',
             borderColor: 'rgb(77, 255, 77)',
             data: [
-              {% for item in s_d %}
+              {% for item in data %}
                 "{{ item["revenue"] }}",
               {% endfor %}
             ]

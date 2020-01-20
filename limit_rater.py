@@ -19,12 +19,12 @@ def get_view_rate_limit():
     return getattr(g,'_view_rate_limit',None)
 
 def on_over_limit(limit):
-    return (jsonify({'data':'rate limit is reached','error':'429'},429))
+    return (jsonify({'data':'rate limit is reached','error':'429'}),429)
 
 def rateLimit( limit, per = 300,send_x_headers = True, 
                 over_limit=on_over_limit,
                 scope_func = lambda:request.remote_addr,
-                key_func=lambda request.endpoint):
+                key_func=lambda: request.endpoint):
     def decorator(f):
         def rate_limited(*args,**kwargs):
             key = 'rate_limit/%s/%s' % (key_func(), scope_func())
@@ -35,3 +35,14 @@ def rateLimit( limit, per = 300,send_x_headers = True,
             return f(*args, **kwargs)
         return update_wrapper(rate_limited, f)
     return decorator
+
+
+@app.after_request
+def inject_x_rate_headers(response):
+    limit = get_view_rate_limit()
+    if limit and limit.send_x_headers:
+        h = response.headers
+        h.add('x-RateLimit-Remaining', str(limit.remaining))
+        h.add('x-RateLimit-Limit', str(limit.limit))
+        h.add('x-RateLimit-Reset', str(limit.reset))
+    return response

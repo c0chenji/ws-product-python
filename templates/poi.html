@@ -1,6 +1,14 @@
 {% extends "base.html" %}
 {% block poi %}
 <button class="button" onclick="window.location.href = '{{ url_for('index') }}';">Go Back</button>
+<center><h1>{{title}} </h1>
+    <p>Allowance: {{count}} hits</p>
+    <!-- <p>Start: {{fromtime}}</p>
+    <p>Now :{{now}}</p> -->
+    {% if count == 0 %}
+        <p>{{message}}</p>
+    {% endif %}
+  </center>
 <center>
     <input type="text" id="search" placeholder = "Any character on the table">
         <table id="table">
@@ -13,7 +21,7 @@
                 <th>Longtitude</th>
                 <th>Poi_id</th>
             </tr>
-            {% for item in new_table%}
+            {% for item in extra_data%}
             <tr class="result">
                 <td>{{ item["date"] }}</td>
                 <td>{{ item["name"] }}</td>
@@ -40,7 +48,7 @@
 <script>
     function initMap() {
         var locations = [
-        {% for location in locations %}
+        {% for location in data %}
             {
                 name:"{{location["name"]}}",
                 spot:{
