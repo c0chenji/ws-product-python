@@ -1,1 +1,1 @@
-web: gunicorn getName.wsgi
+web: gunicorn ws-product-python.wsgi
